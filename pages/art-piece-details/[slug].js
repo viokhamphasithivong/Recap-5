@@ -1,11 +1,9 @@
 /**
- *
  * * Art piece details component
- *
  * shows additional indormation for the selected artpiece
  *
  *
- * @param {}
+ * @param {object} props.selectedArtpiece - The full object of the artpiece with should contain imageSource, colors, slug and name
  *
  *
  */
@@ -13,12 +11,72 @@
 import { useRouter } from "next/router";
 import useSWR, { mutate } from "swr";
 import Image from "next/image";
-import ColorPallete from "@/components/color-pallete";
-import ArtpieceDesc from "@/components/artpiece-desc";
+import ColorPallete from "@/components/ColorPallete";
+import ArtpieceDesc from "@/components/ArtpieceDesc";
+import CommentsSection from "@/components/CommentsSection";
+import { useState } from "react";
+import {
+  Styled_Container,
+  Styled_Image,
+} from "@/styles/ArtPieceDetails.styles";
+import { useEffect } from "react";
 
-export default function ArtPieceDetails({ selectedArtpiece }) {
-  const router = useRouter();
-  const slug = router.query;
+export default function ArtPieceDetails({ slug, selectedArtpiece }) {
+  // const router = useRouter();
+  //const slug = router.query;
+
+  const constantImageHeight = 500;
+  const constantImageWidth = 500;
+
+  const [imageSize, setImageSize] = useState({
+    width: constantImageWidth,
+    height: constantImageHeight,
+  });
+
+  useEffect(() => {
+    console.log("Show useEffect imagSIze: ", imageSize);
+    if (
+      imageSize.width == constantImageWidth &&
+      imageSize.height == constantImageHeight
+    )
+      return;
+
+    console.log("OSNFWEIUNPFE");
+
+    function handleResizeClick(event) {
+      document.removeEventListener("click", handleResizeClick);
+      setImageSize((prev) => {
+        if (
+          prev.width != constantImageWidth ||
+          prev.height != constantImageHeight
+        )
+          return { width: constantImageWidth, height: constantImageHeight };
+        return prev;
+      });
+    }
+    document.addEventListener("click", handleResizeClick);
+
+    return () => document.removeEventListener("click", handleResizeClick);
+  }, [imageSize]);
+
+  function handleImageEnlargement(event) {
+    console.log("enlarge"); /*
+    setImageSize({
+      width: selectedArtpiece.dimensions.width,
+      height: selectedArtpiece.dimensions.width,
+    });*/
+
+    setImageSize((prev) => {
+      if (
+        prev.width == constantImageWidth &&
+        prev.height == constantImageHeight
+      )
+        return {
+          width: selectedArtpiece.dimensions.width,
+          height: selectedArtpiece.dimensions.width,
+        };
+    });
+  }
 
   //--< data detcher
   const fetcher = async (url) => {
@@ -38,27 +96,26 @@ export default function ArtPieceDetails({ selectedArtpiece }) {
     fetcher
   );
 
-  if (!data && !selectedArtpiece) return <p>--- is loading ---</p>;
+  if (error) return <p>artwork could not be retrieved :p</p>;
+
+  if (!data || (isLoading && !selectedArtpiece))
+    return <p>--- is loading ---</p>;
   if (!selectedArtpiece)
     selectedArtpiece = data.find((dataElement) => dataElement.slug == slug);
 
-  console.log("selectedArtpiece: ", selectedArtpiece);
-
   return (
-    <>
+    <Styled_Container>
       <h1>{selectedArtpiece.name}</h1>
-      <Image
+      <Styled_Image
+        onClick={handleImageEnlargement}
         src={selectedArtpiece.imageSource}
         alt="art piece image"
-        width={500}
-        height={500}
+        width={imageSize.width}
+        height={imageSize.height}
       />
       <ColorPallete colors={selectedArtpiece.colors} />
-      <ArtpieceDesc
-        artist={selectedArtpiece.artist}
-        year={selectedArtpiece.year}
-        genre={selectedArtpiece.genre}
-      />
-    </>
+      <ArtpieceDesc artworkObject={selectedArtpiece} />
+      <CommentsSection />
+    </Styled_Container>
   );
 }
