@@ -1,12 +1,9 @@
 import useSWR from "swr";
 import Image from "next/image";
 import styled from "styled-components";
-import { Poppins } from "next/font/google";
 
-const poppins = Poppins({
-  weight: "800",
-  subsets: ["latin"],
-});
+
+
 const fetcher = (url) => fetch(url).then((response) => response.json());
 
 const ImageStyled = styled.div`
