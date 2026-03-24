@@ -78,7 +78,7 @@ export default function RandomImage() {
             style={{ objectFit: "cover", objectPosition: "center" }}
           />
           <GalleryCard>
-            <GalleryCardTitle> "{item.name}"</GalleryCardTitle>
+            <GalleryCardTitle> {`"${item.name}"`}</GalleryCardTitle>
             <GalleryCardArtist>
               {item.artist}, {item.year}
             </GalleryCardArtist>

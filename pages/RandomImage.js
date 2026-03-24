@@ -76,7 +76,7 @@ export default function RandomImage() {
       </ImageStyled>
 
       <GalleryCard>
-        <GalleryCardTitle> "{data[randomNumber].name}"</GalleryCardTitle>
+        <GalleryCardTitle>{data[randomNumber].name}</GalleryCardTitle>
         <GalleryCardArtist>
           {data[randomNumber].artist}, {data[randomNumber].year}
           <Link href="/overview">Overview</Link>
