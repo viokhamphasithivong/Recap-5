@@ -1,4 +1,4 @@
-import Link from "next/link"
+import Link from "next/link";
 import styled from "styled-components";
 
 const NavigationBarStyled = styled.section`
@@ -13,9 +13,12 @@ const NavigationBarStyled = styled.section`
   justify-content: center;
 `;
 
-  export default function NavigationBar(){
-    return(
-        <NavigationBarStyled><Link href="/overview">Overview</Link></NavigationBarStyled>
-
-    )
+export default function NavigationBar() {
+  return (
+    <NavigationBarStyled>
+      <Link href="/overview">Overview</Link>
+    </NavigationBarStyled>
+  );
 }
+
+// <Link href="/art-piece-details/red-and-blue selectedArtpiece={object}>Overview</Link>
