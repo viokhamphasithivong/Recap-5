@@ -3,6 +3,7 @@ import Image from "next/image";
 import styled from "styled-components";
 import { Poppins } from "next/font/google";
 import Link from "next/link";
+import HeartButton from "./HeartButton.js";
 
 const poppins = Poppins({
   weight: "600",
@@ -21,7 +22,7 @@ const ImageStyled = styled.div`
 `;
 
 
-export default function RandomImage() {
+export default function RandomImage({item}) {
   const { data, error, isLoading } = useSWR(
     "https://example-apis.vercel.app/api/art",
     fetcher
@@ -34,7 +35,8 @@ export default function RandomImage() {
 
   return (
     <>
-      <ImageStyled>
+      <ImageStyled >
+        <HeartButton item={item}/>
         <Image
           src={data[randomNumber].imageSource}
           alt={data[randomNumber].name}

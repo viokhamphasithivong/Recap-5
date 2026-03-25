@@ -110,6 +110,8 @@ export default function HomePage() {
       <InfoArea>
         <InfoCard />
       </InfoArea>
+      
+    
     </Layout>
   );
 }
