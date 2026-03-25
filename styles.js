@@ -1,11 +1,15 @@
 import { createGlobalStyle } from "styled-components";
 
-
 export default createGlobalStyle`
   *,
   *::before,
   *::after {
     box-sizing: border-box;
+  }
+
+  :root{
+    --background-color: rgba(255, 255, 255, 0.4);
+
   }
 
   body {

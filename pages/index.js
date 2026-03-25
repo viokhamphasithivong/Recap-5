@@ -1,3 +1,4 @@
+import ArtPieceDetails from "./art-piece-details/[slug]";
 import RandomImage from "../components/RandomImage.js";
 import styled from "styled-components";
 import NavigationBar from "../components/NavigationBar.js";
