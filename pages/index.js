@@ -19,7 +19,7 @@ const Layout = styled.div`
   grid-template-columns: 1fr 2fr 1fr;
   grid-template-rows: auto auto auto;
   gap: 20px;
-  background: lightgrey;
+  background: var(--background-color);
   padding: 20px;
   min-height: 100vh;
 `;

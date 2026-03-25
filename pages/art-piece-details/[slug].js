@@ -21,9 +21,9 @@ import {
 } from "@/styles/ArtPieceDetails.styles";
 import { useEffect } from "react";
 
-export default function ArtPieceDetails({ slug, selectedArtpiece }) {
-  // const router = useRouter();
-  //const slug = router.query;
+export default function ArtPieceDetails({ selectedArtpiece }) {
+const router = useRouter();
+const slug = router.query;
 
   const constantImageHeight = 500;
   const constantImageWidth = 500;

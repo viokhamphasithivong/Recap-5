@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { HeartPlus } from "lucide-react";
 import { Poppins } from "next/font/google";
 import NavigationBar from "../components/NavigationBar.js";
+import Link from "next/link";
 
 const poppins = Poppins({
   weight: "600",
@@ -122,7 +123,7 @@ const Wrapper = styled.div`
   grid-template-columns: 1fr 2fr 1fr;
   grid-template-rows: auto auto auto;
   gap: 20px;
-  background: lightgrey;
+  background: var(--background-color);
   padding: 20px;
   min-height: 100vh;
 `;
@@ -143,7 +144,7 @@ const Paragraph = styled.p`
   font-weight: lighter;
   margin-top: 10px;
 `;
-export default function RandomImage() {
+export default function Overview() {
   const [favourites, setFavourites] = useState([]);
 
   function handleFavourite(item) {
@@ -181,16 +182,18 @@ export default function RandomImage() {
             <StyledButton onClick={() => handleFavourite(item)}>
               <HeartPlus />
             </StyledButton>
-            <Image
-              src={item.imageSource}
-              alt={item.name}
-              fill
-              style={{
-                objectFit: "cover",
-                objectPosition: "center",
-                borderRadius: "10px",
-              }}
-            />
+            <Link href={`./art-piece-details/${item.slug}`} selectedArtpiece={item}>
+              <Image
+                src={item.imageSource}
+                alt={item.name}
+                fill
+                style={{
+                  objectFit: "cover",
+                  objectPosition: "center",
+                  borderRadius: "10px",
+                }}
+              />
+            </Link>
             <GalleryCard>
               <GalleryCardTitle> {`"${item.name}"`}</GalleryCardTitle>
               <GalleryCardArtist>

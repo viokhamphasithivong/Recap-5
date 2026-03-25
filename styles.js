@@ -8,7 +8,7 @@ export default createGlobalStyle`
   }
 
   :root{
-    --background-color: rgba(255, 255, 255, 0.4);
+    --background-color: lightgrey;
 
   }
 
