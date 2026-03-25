@@ -6,6 +6,8 @@ import { Poppins } from "next/font/google";
 import NavigationBar from "../components/NavigationBar.js";
 import Link from "next/link";
 import HeartButton from "../components/HeartButton.js";
+import useLocalStorage from "use-local-storage";
+
 
 const poppins = Poppins({
   weight: "600",
@@ -130,12 +132,8 @@ const Paragraph = styled.p`
   margin-top: 10px;
 `;
 export default function Favourites({ }) {
-  const [favourites, setFavourites] = useState([]);
+  const [favourites, setFavourites] = useLocalStorage("favourites",[]);
 
-  useEffect(() => {
-    const stored = localStorage.getItem("favourites");
-    if (stored) setFavourites(JSON.parse(stored));
-  }, []);
 
   const toggleFavourite = (item) => {
     setFavourites(prev => {

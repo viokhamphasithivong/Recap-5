@@ -6,6 +6,7 @@ import { Poppins } from "next/font/google";
 import NavigationBar from "../components/NavigationBar.js";
 import Link from "next/link";
 import HeartButton from "../components/HeartButton.js";
+import useLocalStorage from "use-local-storage";
 
 const poppins = Poppins({
   weight: "600",
@@ -130,38 +131,26 @@ const Paragraph = styled.p`
   margin-top: 10px;
 `;
 export default function Overview() {
-
   const { data, error, isLoading } = useSWR(
     "https://example-apis.vercel.app/api/art",
     fetcher
   );
-const [favourites, setFavourites] = useState([]);
+  const [favourites, setFavourites] = useLocalStorage("favourites", []);
 
-   // LocalStorage beim Laden
-  useEffect(() => {
-    const stored = localStorage.getItem("favourites");
-    if (stored) setFavourites(JSON.parse(stored));
-  }, []);
-
-  // Live Sync: reagiert auf localStorage-Changes von anderen Tabs oder Komponenten
-  useEffect(() => {
-    const syncFavourites = (e) => {
-      if (e.key === "favourites") {
-        setFavourites(e.newValue ? JSON.parse(e.newValue) : []);
-      }
-    };
-    window.addEventListener("storage", syncFavourites);
-    return () => window.removeEventListener("storage", syncFavourites);
-  }, []);
-
-  const toggleFavourite = (item) => {
+/*   function toggleFavourite (index) {
+    setFavourites(prev.map((favourite, index)=>{
+      if
+    }))
+    console.log(item)
     setFavourites((prev) => {
-      const exists = prev.find(fav => fav.id === item.id);
-      const updated = exists ? prev.filter(fav => fav.id !== item.id) : [...prev, item];
+      const exists = prev.find((fav) => fav.id === item.id);
+      const updated = exists
+        ? prev.filter((fav) => fav.id !== item.id)
+        : [...prev, item];
       localStorage.setItem("favourites", JSON.stringify(updated));
       return updated;
     });
-  };
+  }; */
   if (error) return <p>Error while loading</p>;
   if (isLoading || !data) return <p>Loading</p>;
 
@@ -179,12 +168,11 @@ const [favourites, setFavourites] = useState([]);
         </Paragraph>
       </TextBlock>
       <ImageStyled>
-        {data.map((item) => (
-          <ImageBox key={item.id}>
-        
-              <HeartButton item={item}  toggleFavourite={toggleFavourite}  />
-          
-            <Link href={`./art-piece-details/${item.slug}`} selectedArtpiece={item}>
+        {data.map((item, index) => (
+          <ImageBox key={index}>
+            <HeartButton item={item} toggleFavourite={()=>toggleFavourite(index)} />
+
+            <Link href={`./art-piece-details/${item.slug}`}>
               <Image
                 src={item.imageSource}
                 alt={item.name}
@@ -209,3 +197,4 @@ const [favourites, setFavourites] = useState([]);
     </Wrapper>
   );
 }
+const testArray = [true, false, false, true];
