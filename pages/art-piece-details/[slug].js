@@ -21,9 +21,9 @@ import {
 } from "@/styles/ArtPieceDetails.styles";
 import { useEffect } from "react";
 
-export default function ArtPieceDetails({ selectedArtpiece }) {
-const router = useRouter();
-const slug = router.query;
+export default function ArtPieceDetails({}) {
+  const router = useRouter();
+  const { slug } = router.query;
 
   const constantImageHeight = 500;
   const constantImageWidth = 500;
@@ -33,13 +33,9 @@ const slug = router.query;
     height: constantImageHeight,
   });
 
-  function handleImageEnlargement(event) {
-    console.log("enlarge"); /*
-    setImageSize({
-      width: selectedArtpiece.dimensions.width,
-      height: selectedArtpiece.dimensions.width,
-    });*/
+  const [selectedArtpiece, setSelectedArtpiece] = useState(null);
 
+  function handleImageEnlargement(event) {
     setImageSize((prev) => {
       if (
         prev.width == constantImageWidth &&
@@ -76,12 +72,15 @@ const slug = router.query;
     fetcher
   );
 
+  useEffect(() => {
+    console.log("data ", data);
+    if (!selectedArtpiece && data && slug)
+      setSelectedArtpiece(data.find((dataElement) => dataElement.slug == slug));
+  }, [selectedArtpiece, data, slug]);
+
   if (error) return <p>artwork could not be retrieved :p</p>;
 
-  if (!data || (isLoading && !selectedArtpiece))
-    return <p>--- is loading ---</p>;
-  if (!selectedArtpiece)
-    selectedArtpiece = data.find((dataElement) => dataElement.slug == slug);
+  if (!selectedArtpiece) return <p>--- is loading ---</p>;
 
   return (
     <Styled_Container>
