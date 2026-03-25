@@ -104,15 +104,35 @@ const Header = styled.h1`
   color: transparent;
 `;
 const Wrapper=styled.div`
-background: lightgrey;
-padding: 20px;
-display:grid;
-grid-template-columns: 2fr 1fr;
-grid-template:
-"header header"
-"image nav"
+display: grid;
+  grid-template-areas:
+    "header header header"
+    "text image nav"
+    "text infocard infocard";
+  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-rows: auto auto auto;
+  gap: 20px;
+  background: lightgrey;
+  padding: 20px;
+  min-height: 100vh;
 `
+const TextBlock = styled.div`
+  grid-area: text;
+`;
+const SecondTitle = styled.h2`
+  color: grey;
+  font-size: 1.75rem;
+  font-weight: 200;
+  font-style: italic;
+  margin: 0;
+`;
 
+const Paragraph = styled.p`
+  color: #888888;
+  font-size: 1rem;
+  font-weight: lighter;
+  margin-top: 10px;
+`;
 export default function RandomImage() {
   const [favourites, setFavourites] = useState([]);
 
@@ -135,7 +155,14 @@ export default function RandomImage() {
   return (
     <Wrapper>
     <Header className={poppins.className}>Artgallery.Overview.</Header>
-    
+    <TextBlock>
+        <SecondTitle className={poppins.className}>
+          Pick your Favourite Art Pieces.
+        </SecondTitle>
+        <Paragraph>
+          You can click the Heart Button if you like it. Click it again if not! After you selected your Favourites, go to the Favourites tab in the Navigationbar where you can check them in detail.
+        </Paragraph>
+      </TextBlock>
     <ImageStyled>
       
       {data.map((item) => (
