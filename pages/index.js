@@ -1,4 +1,3 @@
-
 import RandomImage from "./RandomImage.js";
 import styled from "styled-components";
 import NavigationBar from "./NavigationBar.js";
@@ -15,14 +14,13 @@ const Layout = styled.div`
   grid-template-areas:
     "header header header"
     "text image nav"
-    "text infocard nav";
+    "text infocard infocard";
   grid-template-columns: 1fr 2fr 1fr;
   grid-template-rows: auto auto auto;
   gap: 20px;
   background: lightgrey;
   padding: 20px;
   min-height: 100vh;
-  
 `;
 
 const Header = styled.h1`
@@ -72,11 +70,12 @@ const Paragraph = styled.p`
 const ImageArea = styled.div`
   grid-area: image;
   align-content: center;
-  justify-content: center;
 `;
 
 const NavArea = styled.div`
   grid-area: nav;
+  align-content: center;
+  justify-content: center;
 `;
 
 const InfoArea = styled.div`

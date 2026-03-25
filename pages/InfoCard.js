@@ -8,33 +8,34 @@ const fetcher = (url) => fetch(url).then((response) => response.json());
 
 const InfoCardStyled = styled.section`
   background: white;
-  margin: 20px 0;
-  color: grey;
+
+  color: black;
   border-radius: 5px;
-  border: 2px solid white;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+  box-shadow:
+    rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
+    rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
   width: 250px;
 `;
 
 const GalleryCardTitle = styled.h4`
   font-size: 1rem;
-  line-height: 1.3;
-  font-weight: 400;
-  margin: 0.5rem 0;
 
-  padding: 0 1rem;
+  font-weight: 400;
+  margin: 0 0;
+  padding: 1rem 1rem 0.5rem ;
   font-style: italic;
   width: 100%;
 `;
 const GalleryCardArtist = styled.h5`
   font-size: 0.8rem;
-  line-height: 1;
+  margin: 0 0;
   font-weight: 200;
-  margin: 0.5rem 0;
 
-  gap: 10px;
   width: 100%;
-  padding: 0 1rem;
+
+  padding: 0.5rem 0 1rem 1rem;
 `;
 
 export default function InfoCard() {
