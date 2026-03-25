@@ -33,32 +33,6 @@ export default function ArtPieceDetails({ slug, selectedArtpiece }) {
     height: constantImageHeight,
   });
 
-  useEffect(() => {
-    console.log("Show useEffect imagSIze: ", imageSize);
-    if (
-      imageSize.width == constantImageWidth &&
-      imageSize.height == constantImageHeight
-    )
-      return;
-
-    console.log("OSNFWEIUNPFE");
-
-    function handleResizeClick(event) {
-      document.removeEventListener("click", handleResizeClick);
-      setImageSize((prev) => {
-        if (
-          prev.width != constantImageWidth ||
-          prev.height != constantImageHeight
-        )
-          return { width: constantImageWidth, height: constantImageHeight };
-        return prev;
-      });
-    }
-    document.addEventListener("click", handleResizeClick);
-
-    return () => document.removeEventListener("click", handleResizeClick);
-  }, [imageSize]);
-
   function handleImageEnlargement(event) {
     console.log("enlarge"); /*
     setImageSize({
@@ -70,11 +44,17 @@ export default function ArtPieceDetails({ slug, selectedArtpiece }) {
       if (
         prev.width == constantImageWidth &&
         prev.height == constantImageHeight
-      )
+      ) {
         return {
           width: selectedArtpiece.dimensions.width,
           height: selectedArtpiece.dimensions.width,
         };
+      } else {
+        return {
+          width: constantImageWidth,
+          height: constantImageHeight,
+        };
+      }
     });
   }
 
