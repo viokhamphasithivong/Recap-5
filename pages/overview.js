@@ -23,15 +23,17 @@ const ImageStyled = styled.div`
   background: lightgrey;
   min-height: 100vh;
   padding: 2rem 6rem;
+   border-radius: 10px;
 `;
 
 const ImageBox = styled.div`
   width: 300px;
   height: 400px;
   position: relative;
-  border-radius: 10px;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  border: 10px solid white;
+  border-radius: 10px; 
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+  padding: 5px; /* 👈 wichtig */
+  overflow: hidden; /* 👈 verhindert Überlaufen */
 `;
 
 const GalleryCard = styled.section`
@@ -145,7 +147,7 @@ export default function RandomImage() {
             src={item.imageSource}
             alt={item.name}
             fill
-            style={{ objectFit: "cover", objectPosition: "center" }}
+            style={{ objectFit: "cover", objectPosition: "center",borderRadius: "10px" }}
           />
           <GalleryCard>
             <GalleryCardTitle> {`"${item.name}"`}</GalleryCardTitle>
