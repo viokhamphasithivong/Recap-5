@@ -8,12 +8,13 @@ import Link from "next/link";
 import HeartButton from "../components/HeartButton.js";
 import useLocalStorage from "use-local-storage";
 
+
 const poppins = Poppins({
   weight: "600",
   subsets: ["latin"],
 });
 
-const fetcher = (url) => fetch(url).then((response) => response.json());
+
 
 const ImageStyled = styled.div`
   width: 100%;
@@ -88,11 +89,11 @@ const Header = styled.h1`
   /* Regenbogen-Gradient */
   background: linear-gradient(
     40deg,
-    #ff7f00,
-    #ffff00,
-    #00ff00,
-    #0000ff,
-    #4b0082
+    #5a00cf,
+    #0026ff,
+    #d0ff00,
+    #1eff00,
+    #ff7b00
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -130,36 +131,28 @@ const Paragraph = styled.p`
   font-weight: lighter;
   margin-top: 10px;
 `;
-export default function Overview() {
-  const { data, error, isLoading } = useSWR(
-    "https://example-apis.vercel.app/api/art",
-    fetcher
-  );
-  const [favourites, setFavourites] = useLocalStorage("favourites", []);
+export default function Favourites({ }) {
+  const [favourites, setFavourites] = useLocalStorage("favourites",[]);
 
-/*   function toggleFavourite (index) {
-    setFavourites(prev.map((favourite, index)=>{
-      if
-    }))
-    console.log(item)
-    setFavourites((prev) => {
-      const exists = prev.find((fav) => fav.id === item.id);
-      const updated = exists
-        ? prev.filter((fav) => fav.id !== item.id)
-        : [...prev, item];
+
+  const toggleFavourite = (item) => {
+    setFavourites(prev => {
+      const exists = prev.find(fav => fav.id === item.id);
+      const updated = exists ? prev.filter(fav => fav.id !== item.id) : [...prev, item];
       localStorage.setItem("favourites", JSON.stringify(updated));
       return updated;
     });
-  }; */
-  if (error) return <p>Error while loading</p>;
-  if (isLoading || !data) return <p>Loading</p>;
+  };
 
+
+
+  
   return (
     <Wrapper>
-      <Header className={poppins.className}>Artgallery.Overview.</Header>
+      <Header className={poppins.className}>Artgallery.Favourites.</Header>
       <TextBlock>
         <SecondTitle className={poppins.className}>
-          Pick your Favourite Art Pieces.
+          Your Collection in one place.
         </SecondTitle>
         <Paragraph>
           You can click the Heart Button if you like it. Click it again if not!
@@ -167,34 +160,36 @@ export default function Overview() {
           Navigationbar where you can check them in detail.
         </Paragraph>
       </TextBlock>
-      <ImageStyled>
-        {data.map((item, index) => (
-          <ImageBox key={index}>
-            <HeartButton item={item} toggleFavourite={()=>toggleFavourite(index)} />
-
-            <Link href={`./art-piece-details/${item.slug}`}>
-              <Image
-                src={item.imageSource}
-                alt={item.name}
-                fill
-                style={{
-                  objectFit: "cover",
-                  objectPosition: "center",
-                  borderRadius: "10px",
-                }}
+<ImageStyled>
+        {favourites.length === 0 ? (
+          <p>No favourites yet 👀</p>
+        ) : (
+          favourites.map((item) => (
+            <ImageBox key={item.id}>
+              <HeartButton
+                item={item}
+                toggleFavourite={toggleFavourite}
+                isFavourite={true}
               />
-            </Link>
-            <GalleryCard>
-              <GalleryCardTitle> {`"${item.name}"`}</GalleryCardTitle>
-              <GalleryCardArtist>
-                {item.artist}, {item.year}
-              </GalleryCardArtist>
-            </GalleryCard>
-          </ImageBox>
-        ))}
+              <Link href={`/art-piece-details/${item.slug}`}>
+                <Image
+                  src={item.imageSource}
+                  alt={item.name}
+                  fill
+                  style={{ objectFit: "cover", borderRadius: "10px" }}
+                />
+              </Link>
+              <GalleryCard>
+                <p>{item.name}</p>
+                <p>
+                  {item.artist}, {item.year}
+                </p>
+              </GalleryCard>
+            </ImageBox>
+          ))
+        )}
       </ImageStyled>
       <NavigationBar />
     </Wrapper>
   );
 }
-const testArray = [true, false, false, true];

@@ -21,14 +21,14 @@ const NavigationBarStyled = styled.li`
 export default function NavigationBar() {
   return (
     <NavigationBarStyled>
-      <Link href="/pages/index.js">
+      <Link href="/index">
         {" "}
         <Sparkles size="2rem" />
       </Link>
       <Link href="/overview">
         <Images size="2rem" />
       </Link>
-      <Link href="/overview">
+      <Link href="/favourites">
         <BookHeart size="2rem" />
       </Link>
     </NavigationBarStyled>
