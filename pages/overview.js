@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { HeartPlus } from "lucide-react";
 import { Poppins } from "next/font/google";
-import NavigationBar from "./NavigationBar.js"
+import NavigationBar from "../components/NavigationBar.js";
 
 const poppins = Poppins({
   weight: "600",
@@ -16,33 +16,39 @@ const fetcher = (url) => fetch(url).then((response) => response.json());
 const ImageStyled = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns:repeat(auto-fit, 300px);
+  grid-template-columns: repeat(auto-fit, 300px);
   gap: 20px;
   justify-content: center;
   overflow: hidden;
   background: lightgrey;
   min-height: 100vh;
   padding: 2rem 6rem;
-   border-radius: 10px;
+  border-radius: 10px;
 `;
 
 const ImageBox = styled.div`
   width: 300px;
   height: 400px;
   position: relative;
-  border-radius: 10px; 
-  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
-  padding: 5px; /* 👈 wichtig */
-  overflow: hidden; /* 👈 verhindert Überlaufen */
+  border-radius: 10px;
+  box-shadow:
+    rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
+    rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+  padding: 5px;
+  overflow: hidden;
 `;
 
 const GalleryCard = styled.section`
   position: absolute;
   bottom: 10px;
   left: 10px;
-  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+  box-shadow:
+    rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
+    rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
   background: rgba(255, 255, 255, 0.8);
- 
+
   border-radius: 5px;
 
   color: black;
@@ -55,9 +61,10 @@ const GalleryCardTitle = styled.h4`
 
   font-weight: 400;
   margin: 0 0;
-  padding: 1rem 1rem 0.5rem ;
+  padding: 1rem 1rem 0.5rem;
   font-style: italic;
-  width: 100%;`
+  width: 100%;
+`;
 
 const GalleryCardArtist = styled.p`
   font-size: 0.8rem;
@@ -73,7 +80,10 @@ const StyledButton = styled.button`
   top: 10px;
   right: 10px;
   z-index: 2;
-  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+  box-shadow:
+    rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
+    rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
   background: rgba(255, 255, 255, 0.8);
   border: none;
   border-radius: 50%;
@@ -90,7 +100,7 @@ const Header = styled.h1`
 
   /* Regenbogen-Gradient */
   background: linear-gradient(
-    90deg,
+    40deg,
     #ff7f00,
     #ffff00,
     #00ff00,
@@ -103,8 +113,8 @@ const Header = styled.h1`
   background-clip: text;
   color: transparent;
 `;
-const Wrapper=styled.div`
-display: grid;
+const Wrapper = styled.div`
+  display: grid;
   grid-template-areas:
     "header header header"
     "text image nav"
@@ -115,7 +125,7 @@ display: grid;
   background: lightgrey;
   padding: 20px;
   min-height: 100vh;
-`
+`;
 const TextBlock = styled.div`
   grid-area: text;
 `;
@@ -154,38 +164,43 @@ export default function RandomImage() {
 
   return (
     <Wrapper>
-    <Header className={poppins.className}>Artgallery.Overview.</Header>
-    <TextBlock>
+      <Header className={poppins.className}>Artgallery.Overview.</Header>
+      <TextBlock>
         <SecondTitle className={poppins.className}>
           Pick your Favourite Art Pieces.
         </SecondTitle>
         <Paragraph>
-          You can click the Heart Button if you like it. Click it again if not! After you selected your Favourites, go to the Favourites tab in the Navigationbar where you can check them in detail.
+          You can click the Heart Button if you like it. Click it again if not!
+          After you selected your Favourites, go to the Favourites tab in the
+          Navigationbar where you can check them in detail.
         </Paragraph>
       </TextBlock>
-    <ImageStyled>
-      
-      {data.map((item) => (
-        <ImageBox key={item.id}>
-          <StyledButton onClick={() => handleFavourite(item)}>
-            <HeartPlus />
-          </StyledButton>
-          <Image
-            src={item.imageSource}
-            alt={item.name}
-            fill
-            style={{ objectFit: "cover", objectPosition: "center",borderRadius: "10px" }}
-          />
-          <GalleryCard>
-            <GalleryCardTitle> {`"${item.name}"`}</GalleryCardTitle>
-            <GalleryCardArtist>
-              {item.artist}, {item.year}
-            </GalleryCardArtist>
-          </GalleryCard>
-        </ImageBox>
-      ))}
-      
-    </ImageStyled>
-    <NavigationBar />
-  </Wrapper>
-)}
+      <ImageStyled>
+        {data.map((item) => (
+          <ImageBox key={item.id}>
+            <StyledButton onClick={() => handleFavourite(item)}>
+              <HeartPlus />
+            </StyledButton>
+            <Image
+              src={item.imageSource}
+              alt={item.name}
+              fill
+              style={{
+                objectFit: "cover",
+                objectPosition: "center",
+                borderRadius: "10px",
+              }}
+            />
+            <GalleryCard>
+              <GalleryCardTitle> {`"${item.name}"`}</GalleryCardTitle>
+              <GalleryCardArtist>
+                {item.artist}, {item.year}
+              </GalleryCardArtist>
+            </GalleryCard>
+          </ImageBox>
+        ))}
+      </ImageStyled>
+      <NavigationBar />
+    </Wrapper>
+  );
+}

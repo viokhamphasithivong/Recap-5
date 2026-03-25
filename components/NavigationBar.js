@@ -21,7 +21,7 @@ const NavigationBarStyled = styled.li`
 export default function NavigationBar() {
   return (
     <NavigationBarStyled>
-      <Link href="/RandomImage">
+      <Link href="/pages/index.js">
         {" "}
         <Sparkles size="2rem" />
       </Link>

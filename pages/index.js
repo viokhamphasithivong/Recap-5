@@ -1,7 +1,7 @@
-import RandomImage from "./RandomImage.js";
+import RandomImage from "../components/RandomImage.js";
 import styled from "styled-components";
-import NavigationBar from "./NavigationBar.js";
-import InfoCard from "./InfoCard.js";
+import NavigationBar from "../components/NavigationBar.js";
+import InfoCard from "../components/InfoCard.js";
 import { Poppins } from "next/font/google";
 
 const poppins = Poppins({
@@ -32,7 +32,7 @@ const Header = styled.h1`
 
   /* Regenbogen-Gradient */
   background: linear-gradient(
-    90deg,
+    40deg,
     #ff0000,
     #ff7f00,
     #ffff00,
@@ -85,7 +85,7 @@ const InfoArea = styled.div`
 export default function HomePage() {
   return (
     <Layout>
-      <Header className={poppins.className}>Artgallery.</Header>
+      <Header className={poppins.className}>Artgallery.Spotlight.</Header>
 
       <TextBlock>
         <SecondTitle className={poppins.className}>
