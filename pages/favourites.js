@@ -6,7 +6,7 @@ import { Poppins } from "next/font/google";
 import NavigationBar from "../components/NavigationBar.js";
 import Link from "next/link";
 import LikeButton from "../components/LikeButton.js";
-import { useArtStore } from "./stores/artpieceStore.js";
+import { useArtStore } from "../stores/artpieceStore.js";
 
 export default function Favourites({}) {
   const { artpiecesData, setArtpiecesData, toggleFavourite } = useArtStore();

@@ -12,7 +12,7 @@ import useLocalStorage from "use-local-storage";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-import { useArtStore } from "./stores/artpieceStore.js";
+import { useArtStore } from "../stores/artpieceStore.js";
 import { Database } from "lucide-react";
 
 export default function Overview() {

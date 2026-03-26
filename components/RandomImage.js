@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Poppins } from "next/font/google";
 import Link from "next/link";
 import LikeButton from "./LikeButton.js";
-import { useArtStore } from "@/pages/stores/artpieceStore.js";
+import { useArtStore } from "@/stores/artpieceStore.js";
 import { useEffect } from "react";
 import { useState } from "react";
 

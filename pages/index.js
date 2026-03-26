@@ -4,7 +4,7 @@ import styled from "styled-components";
 import NavigationBar from "../components/NavigationBar.js";
 import InfoCard from "../components/InfoCard.js";
 import { Poppins } from "next/font/google";
-import { useArtStore } from "./stores/artpieceStore";
+import { useArtStore } from "../stores/artpieceStore";
 import { useState } from "react";
 import useSWR from "swr";
 import { useEffect } from "react";
