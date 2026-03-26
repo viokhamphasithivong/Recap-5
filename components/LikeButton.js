@@ -21,9 +21,9 @@ export default function LikeButton({ artpiece, onToggleFavourite }) {
   return (
     <StyledButton onClick={() => onToggleFavourite()}>
       {artpiece.isFavourite ? (
-        <HeartMinus color="red" />
+        <HeartMinus color="black" />
       ) : (
-        <HeartPlus color="black" />
+        <HeartPlus color="red" />
       )}
     </StyledButton>
   );
