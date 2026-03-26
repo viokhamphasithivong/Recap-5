@@ -14,13 +14,16 @@ import Image from "next/image";
 import ColorPallete from "@/components/ColorPallete";
 import ArtpieceDesc from "@/components/ArtpieceDesc";
 import CommentsSection from "@/components/CommentsSection";
+
 import { useState } from "react";
 import {
   Styled_Container,
   Styled_Image,
   Styled_Layout,
+  Header,
 } from "@/styles/ArtPieceDetails.styles";
 import { useEffect } from "react";
+import NavigationBar from "@/components/NavigationBar";
 
 export default function ArtPieceDetails({}) {
   const router = useRouter();
@@ -85,6 +88,7 @@ export default function ArtPieceDetails({}) {
 
   return (
     <Styled_Layout>
+      <Header>Artgallery.Details.</Header>
       <Styled_Container>
         <h1>{selectedArtpiece.name}</h1>
         <Styled_Image
@@ -98,6 +102,7 @@ export default function ArtPieceDetails({}) {
         <ArtpieceDesc artworkObject={selectedArtpiece} />
         <CommentsSection />
       </Styled_Container>
+      <NavigationBar />
     </Styled_Layout>
   );
 }

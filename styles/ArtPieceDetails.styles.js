@@ -19,3 +19,11 @@ export const Styled_Layout = styled.div`
   width: 100%;
   background: var(--background-color);
 `;
+
+export const Header = styled.h1`
+  grid-area: header;
+  font-size: 4rem;
+  font-weight: bold;
+  font-style: italic;
+  margin: 0;
+`;
