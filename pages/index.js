@@ -9,6 +9,65 @@ import { useState } from "react";
 import useSWR from "swr";
 import { useEffect } from "react";
 
+export default function HomePage() {
+  const { artpiecesData, setArtpiecesData, toggleFavourite } = useArtStore();
+  const [randomNumber, setRandomNumber] = useState(null);
+
+  const fetcher = (url) => fetch(url).then((response) => response.json());
+
+  const { data, error, isLoading } = useSWR(
+    "https://example-apis.vercel.app/api/art",
+    fetcher
+  );
+
+  useEffect(() => {
+    if (data && artpiecesData.length === 0) setArtpiecesData(data);
+  }, [data, artpiecesData]);
+
+  useEffect(() => {
+    if (artpiecesData.length > 0 && randomNumber === null) {
+      setRandomNumber(Math.floor(Math.random() * artpiecesData.length));
+    }
+  }, [artpiecesData, randomNumber]);
+
+  if (error) return <p>Error while loading</p>;
+  if (!artpiecesData || artpiecesData.length === 0 || randomNumber === null)
+    return <p>Loading</p>;
+
+  return (
+    <Layout>
+      <Header className={poppins.className}>Artgallery.Spotlight.</Header>
+
+      <TextBlock>
+        <SecondTitle className={poppins.className}>
+          Explore and Collect your Favourite Art Pieces.
+        </SecondTitle>
+        <Paragraph>
+          Start by navigating to the Overview Tab. Choose from Various Artist
+          around the Globe by selecting your Favourites and saving them at one
+          Place.
+        </Paragraph>
+      </TextBlock>
+
+      <ImageArea>
+        <RandomImage
+          artpiecesData={artpiecesData}
+          randomNumber={randomNumber}
+          toggleFavourite={toggleFavourite}
+        />
+      </ImageArea>
+
+      <NavArea>
+        <NavigationBar />
+      </NavArea>
+
+      <InfoArea>
+        <InfoCard artpiecesData={artpiecesData} randomNumber={randomNumber} />
+      </InfoArea>
+    </Layout>
+  );
+}
+
 const poppins = Poppins({
   weight: "600",
   subsets: ["latin"],
@@ -86,62 +145,3 @@ const NavArea = styled.div`
 const InfoArea = styled.div`
   grid-area: infocard;
 `;
-
-export default function HomePage() {
-  const { artpiecesData, setArtpiecesData, toggleFavourite } = useArtStore();
-  const [randomNumber, setRandomNumber] = useState(null);
-
-  const fetcher = (url) => fetch(url).then((response) => response.json());
-
-  const { data, error, isLoading } = useSWR(
-    "https://example-apis.vercel.app/api/art",
-    fetcher
-  );
-
-  useEffect(() => {
-    if (data && artpiecesData.length === 0) setArtpiecesData(data);
-  }, [data, artpiecesData]);
-
-  useEffect(() => {
-    if (artpiecesData.length > 0 && randomNumber === null) {
-      setRandomNumber(Math.floor(Math.random() * artpiecesData.length));
-    }
-  }, [artpiecesData, randomNumber]);
-
-  if (error) return <p>Error while loading</p>;
-  if (!artpiecesData || artpiecesData.length === 0 || randomNumber === null)
-    return <p>Loading</p>;
-
-  return (
-    <Layout>
-      <Header className={poppins.className}>Artgallery.Spotlight.</Header>
-
-      <TextBlock>
-        <SecondTitle className={poppins.className}>
-          Explore and Collect your Favourite Art Pieces.
-        </SecondTitle>
-        <Paragraph>
-          Start by navigating to the Overview Tab. Choose from Various Artist
-          around the Globe by selecting your Favourites and saving them at one
-          Place.
-        </Paragraph>
-      </TextBlock>
-
-      <ImageArea>
-        <RandomImage
-          artpiecesData={artpiecesData}
-          randomNumber={randomNumber}
-          toggleFavourite={toggleFavourite}
-        />
-      </ImageArea>
-
-      <NavArea>
-        <NavigationBar />
-      </NavArea>
-
-      <InfoArea>
-        <InfoCard artpiecesData={artpiecesData} randomNumber={randomNumber} />
-      </InfoArea>
-    </Layout>
-  );
-}
