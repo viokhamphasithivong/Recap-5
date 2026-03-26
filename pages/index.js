@@ -4,6 +4,10 @@ import styled from "styled-components";
 import NavigationBar from "../components/NavigationBar.js";
 import InfoCard from "../components/InfoCard.js";
 import { Poppins } from "next/font/google";
+import { useArtStore } from "./stores/artpieceStore";
+import { useState } from "react";
+import useSWR from "swr";
+import { useEffect } from "react";
 
 const poppins = Poppins({
   weight: "600",
@@ -84,6 +88,30 @@ const InfoArea = styled.div`
 `;
 
 export default function HomePage() {
+  const { artpiecesData, setArtpiecesData, toggleFavourite } = useArtStore();
+  const [randomNumber, setRandomNumber] = useState(null);
+
+  const fetcher = (url) => fetch(url).then((response) => response.json());
+
+  const { data, error, isLoading } = useSWR(
+    "https://example-apis.vercel.app/api/art",
+    fetcher
+  );
+
+  useEffect(() => {
+    if (data && artpiecesData.length === 0) setArtpiecesData(data);
+  }, [data, artpiecesData]);
+
+  useEffect(() => {
+    if (artpiecesData.length > 0 && randomNumber === null) {
+      setRandomNumber(Math.floor(Math.random() * artpiecesData.length));
+    }
+  }, [artpiecesData, randomNumber]);
+
+  if (error) return <p>Error while loading</p>;
+  if (!artpiecesData || artpiecesData.length === 0 || randomNumber === null)
+    return <p>Loading</p>;
+
   return (
     <Layout>
       <Header className={poppins.className}>Artgallery.Spotlight.</Header>
@@ -100,7 +128,11 @@ export default function HomePage() {
       </TextBlock>
 
       <ImageArea>
-        <RandomImage />
+        <RandomImage
+          artpiecesData={artpiecesData}
+          randomNumber={randomNumber}
+          toggleFavourite={toggleFavourite}
+        />
       </ImageArea>
 
       <NavArea>
@@ -108,10 +140,8 @@ export default function HomePage() {
       </NavArea>
 
       <InfoArea>
-        <InfoCard />
+        <InfoCard artpiecesData={artpiecesData} randomNumber={randomNumber} />
       </InfoArea>
-      
-    
     </Layout>
   );
 }

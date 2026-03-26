@@ -13,3 +13,9 @@ export const Styled_Image = styled(Image)`
     width 0.5s ease-in-out,
     height 0.5s ease-in-out;
 `;
+
+export const Styled_Layout = styled.div`
+  height: 100%;
+  width: 100%;
+  background: var(--background-color);
+`;

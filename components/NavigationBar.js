@@ -14,15 +14,17 @@ const NavigationBarStyled = styled.li`
   flex-direction: column;
   gap: 20px;
   background: white;
-  
-  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+
+  box-shadow:
+    rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
+    rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 `;
 
 export default function NavigationBar() {
   return (
     <NavigationBarStyled>
-      <Link href="/index">
-        {" "}
+      <Link href="/">
         <Sparkles size="2rem" />
       </Link>
       <Link href="/overview">

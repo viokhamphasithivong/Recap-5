@@ -5,16 +5,68 @@ import { useState, useEffect } from "react";
 import { Poppins } from "next/font/google";
 import NavigationBar from "../components/NavigationBar.js";
 import Link from "next/link";
-import HeartButton from "../components/HeartButton.js";
-import useLocalStorage from "use-local-storage";
+import LikeButton from "../components/LikeButton.js";
+import { useArtStore } from "./stores/artpieceStore.js";
 
+export default function Favourites({}) {
+  const { artpiecesData, setArtpiecesData, toggleFavourite } = useArtStore();
+
+  const favouriteArtPresent = artpiecesData.find(
+    (artpiece) => artpiece.isFavourite
+  );
+
+  return (
+    <Wrapper>
+      <Header className={poppins.className}>Artgallery.Favourites.</Header>
+      <TextBlock>
+        <SecondTitle className={poppins.className}>
+          Your Collection in one place.
+        </SecondTitle>
+        <Paragraph>
+          You can click the Heart Button if you like it. Click it again if not!
+          After you selected your Favourites, go to the Favourites tab in the
+          Navigationbar where you can check them in detail.
+        </Paragraph>
+      </TextBlock>
+      <ImageStyled>
+        {!favouriteArtPresent ? (
+          <p>No favourites yet 👀</p>
+        ) : (
+          artpiecesData.map((arpiece, index) =>
+            arpiece.isFavourite ? (
+              <ImageBox key={arpiece.id}>
+                <LikeButton
+                  artpiece={arpiece}
+                  onToggleFavourite={() => toggleFavourite(index)}
+                />
+                <Link href={`/art-piece-details/${arpiece.slug}`}>
+                  <Image
+                    src={arpiece.imageSource}
+                    alt={arpiece.name}
+                    fill
+                    style={{ objectFit: "cover", borderRadius: "10px" }}
+                  />
+                </Link>
+                <GalleryCard>
+                  <p>{arpiece.name}</p>
+                  <p>
+                    {arpiece.artist}, {arpiece.year}
+                  </p>
+                </GalleryCard>
+              </ImageBox>
+            ) : null
+          )
+        )}
+      </ImageStyled>
+      <NavigationBar />
+    </Wrapper>
+  );
+}
 
 const poppins = Poppins({
   weight: "600",
   subsets: ["latin"],
 });
-
-
 
 const ImageStyled = styled.div`
   width: 100%;
@@ -131,65 +183,3 @@ const Paragraph = styled.p`
   font-weight: lighter;
   margin-top: 10px;
 `;
-export default function Favourites({ }) {
-  const [favourites, setFavourites] = useLocalStorage("favourites",[]);
-
-
-  const toggleFavourite = (item) => {
-    setFavourites(prev => {
-      const exists = prev.find(fav => fav.id === item.id);
-      const updated = exists ? prev.filter(fav => fav.id !== item.id) : [...prev, item];
-      localStorage.setItem("favourites", JSON.stringify(updated));
-      return updated;
-    });
-  };
-
-
-
-  
-  return (
-    <Wrapper>
-      <Header className={poppins.className}>Artgallery.Favourites.</Header>
-      <TextBlock>
-        <SecondTitle className={poppins.className}>
-          Your Collection in one place.
-        </SecondTitle>
-        <Paragraph>
-          You can click the Heart Button if you like it. Click it again if not!
-          After you selected your Favourites, go to the Favourites tab in the
-          Navigationbar where you can check them in detail.
-        </Paragraph>
-      </TextBlock>
-<ImageStyled>
-        {favourites.length === 0 ? (
-          <p>No favourites yet 👀</p>
-        ) : (
-          favourites.map((item) => (
-            <ImageBox key={item.id}>
-              <HeartButton
-                item={item}
-                toggleFavourite={toggleFavourite}
-                isFavourite={true}
-              />
-              <Link href={`/art-piece-details/${item.slug}`}>
-                <Image
-                  src={item.imageSource}
-                  alt={item.name}
-                  fill
-                  style={{ objectFit: "cover", borderRadius: "10px" }}
-                />
-              </Link>
-              <GalleryCard>
-                <p>{item.name}</p>
-                <p>
-                  {item.artist}, {item.year}
-                </p>
-              </GalleryCard>
-            </ImageBox>
-          ))
-        )}
-      </ImageStyled>
-      <NavigationBar />
-    </Wrapper>
-  );
-}

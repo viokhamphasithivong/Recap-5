@@ -13,7 +13,7 @@ export default function CommentsSection() {
   const [remainingCharacters, setRemainingCharacters] =
     useState(maxCommentLength);
   const [artpieceComments, setArtpieceComments] = useLocalStorage(
-    "artpiece comments",
+    "artpieceComments",
     []
   );
 
