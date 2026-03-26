@@ -25,5 +25,4 @@ const Styled_Wrapper = styled.div`
   display: flex;
   flex-direction: row;
 `;
-git;
 const Styled_P = styled.p``;
