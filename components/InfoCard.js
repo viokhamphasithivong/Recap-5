@@ -4,8 +4,6 @@ import styled from "styled-components";
 
 import Link from "next/link";
 
-const fetcher = (url) => fetch(url).then((response) => response.json());
-
 const InfoCardStyled = styled.section`
   background: white;
 
@@ -24,7 +22,7 @@ const GalleryCardTitle = styled.h4`
 
   font-weight: 400;
   margin: 0 0;
-  padding: 1rem 1rem 0.5rem ;
+  padding: 1rem 1rem 0.5rem;
   font-style: italic;
   width: 100%;
 `;
@@ -38,23 +36,15 @@ const GalleryCardArtist = styled.h5`
   padding: 0.5rem 0 1rem 1rem;
 `;
 
-export default function InfoCard() {
-  const { data, error, isLoading } = useSWR(
-    "https://example-apis.vercel.app/api/art",
-    fetcher
-  );
-
-  if (error) return <p>Error while loading</p>;
-  if (isLoading || !data) return <p>Loading</p>;
-
-  const randomNumber = Math.floor(Math.random() * data.length);
-
+export default function InfoCard({ artpiecesData, randomNumber }) {
+  if (!artpiecesData) return null;
   return (
     <>
       <InfoCardStyled>
-        <GalleryCardTitle>{data[randomNumber].name}</GalleryCardTitle>
+        <GalleryCardTitle>{artpiecesData[randomNumber].name}</GalleryCardTitle>
         <GalleryCardArtist>
-          {data[randomNumber].artist}, {data[randomNumber].year}
+          {artpiecesData[randomNumber].artist}
+          {artpiecesData[randomNumber].year}
         </GalleryCardArtist>
       </InfoCardStyled>
     </>

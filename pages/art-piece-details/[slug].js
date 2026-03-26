@@ -18,6 +18,7 @@ import { useState } from "react";
 import {
   Styled_Container,
   Styled_Image,
+  Styled_Layout,
 } from "@/styles/ArtPieceDetails.styles";
 import { useEffect } from "react";
 
@@ -83,18 +84,20 @@ export default function ArtPieceDetails({}) {
   if (!selectedArtpiece) return <p>--- is loading ---</p>;
 
   return (
-    <Styled_Container>
-      <h1>{selectedArtpiece.name}</h1>
-      <Styled_Image
-        onClick={handleImageEnlargement}
-        src={selectedArtpiece.imageSource}
-        alt="art piece image"
-        width={imageSize.width}
-        height={imageSize.height}
-      />
-      <ColorPallete colors={selectedArtpiece.colors} />
-      <ArtpieceDesc artworkObject={selectedArtpiece} />
-      <CommentsSection />
-    </Styled_Container>
+    <Styled_Layout>
+      <Styled_Container>
+        <h1>{selectedArtpiece.name}</h1>
+        <Styled_Image
+          onClick={handleImageEnlargement}
+          src={selectedArtpiece.imageSource}
+          alt="art piece image"
+          width={imageSize.width}
+          height={imageSize.height}
+        />
+        <ColorPallete colors={selectedArtpiece.colors} />
+        <ArtpieceDesc artworkObject={selectedArtpiece} />
+        <CommentsSection />
+      </Styled_Container>
+    </Styled_Layout>
   );
 }

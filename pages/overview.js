@@ -1,19 +1,89 @@
 import useSWR from "swr";
 import Image from "next/image";
-import styled from "styled-components";
-import { useState, useEffect } from "react";
 import { Poppins } from "next/font/google";
+import styled from "styled-components";
+
+import { useState, useEffect } from "react";
 import NavigationBar from "../components/NavigationBar.js";
 import Link from "next/link";
-import HeartButton from "../components/HeartButton.js";
+import LikeButton from "../components/LikeButton.js";
 import useLocalStorage from "use-local-storage";
+
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+
+import { useArtStore } from "./stores/artpieceStore.js";
+import { Database } from "lucide-react";
+
+export default function Overview() {
+  const fetcher = (url) => fetch(url).then((response) => response.json());
+
+  const { data, error, isLoading } = useSWR(
+    "https://example-apis.vercel.app/api/art",
+    fetcher
+  );
+  const { artpiecesData, setArtpiecesData, toggleFavourite } = useArtStore();
+
+  useEffect(() => {
+    if (data && artpiecesData.length === 0) setArtpiecesData(data);
+  }, [data]);
+
+  if (error) return <p>Error while loading</p>;
+  if (artpiecesData.length === 0) return <p>Loading</p>;
+
+  return (
+    <Wrapper>
+      <Header className={poppins.className}>Artgallery.Overview.</Header>
+      <TextBlock>
+        <SecondTitle className={poppins.className}>
+          Pick your Favourite Art Pieces.
+        </SecondTitle>
+        <Paragraph>
+          You can click the Heart Button if you like it. Click it again if not!
+          After you selected your Favourites, go to the Favourites tab in the
+          Navigationbar where you can check them in detail.
+        </Paragraph>
+      </TextBlock>
+      <ImageStyled>
+        {artpiecesData.map((artpiece, index) => (
+          <ImageBox key={index}>
+            <LikeButton
+              artpiece={artpiece}
+              onToggleFavourite={() => toggleFavourite(index)}
+            />
+
+            <Link href={`./art-piece-details/${artpiece.slug}`}>
+              <Image
+                src={artpiece.imageSource}
+                alt={artpiece.name}
+                fill
+                style={{
+                  objectFit: "cover",
+                  objectPosition: "center",
+                  borderRadius: "10px",
+                }}
+              />
+            </Link>
+            <GalleryCard>
+              <GalleryCardTitle> {`"${artpiece.name}"`}</GalleryCardTitle>
+              <GalleryCardArtist>
+                {artpiece.artist}, {artpiece.year}
+              </GalleryCardArtist>
+            </GalleryCard>
+          </ImageBox>
+        ))}
+      </ImageStyled>
+      <NavigationBar />
+    </Wrapper>
+  );
+}
+
+// STYLES --------------------------------------------------------------------------
 
 const poppins = Poppins({
   weight: "600",
   subsets: ["latin"],
 });
-
-const fetcher = (url) => fetch(url).then((response) => response.json());
 
 const ImageStyled = styled.div`
   width: 100%;
@@ -130,71 +200,3 @@ const Paragraph = styled.p`
   font-weight: lighter;
   margin-top: 10px;
 `;
-export default function Overview() {
-  const { data, error, isLoading } = useSWR(
-    "https://example-apis.vercel.app/api/art",
-    fetcher
-  );
-  const [favourites, setFavourites] = useLocalStorage("favourites", []);
-
-/*   function toggleFavourite (index) {
-    setFavourites(prev.map((favourite, index)=>{
-      if
-    }))
-    console.log(item)
-    setFavourites((prev) => {
-      const exists = prev.find((fav) => fav.id === item.id);
-      const updated = exists
-        ? prev.filter((fav) => fav.id !== item.id)
-        : [...prev, item];
-      localStorage.setItem("favourites", JSON.stringify(updated));
-      return updated;
-    });
-  }; */
-  if (error) return <p>Error while loading</p>;
-  if (isLoading || !data) return <p>Loading</p>;
-
-  return (
-    <Wrapper>
-      <Header className={poppins.className}>Artgallery.Overview.</Header>
-      <TextBlock>
-        <SecondTitle className={poppins.className}>
-          Pick your Favourite Art Pieces.
-        </SecondTitle>
-        <Paragraph>
-          You can click the Heart Button if you like it. Click it again if not!
-          After you selected your Favourites, go to the Favourites tab in the
-          Navigationbar where you can check them in detail.
-        </Paragraph>
-      </TextBlock>
-      <ImageStyled>
-        {data.map((item, index) => (
-          <ImageBox key={index}>
-            <HeartButton item={item} toggleFavourite={()=>toggleFavourite(index)} />
-
-            <Link href={`./art-piece-details/${item.slug}`}>
-              <Image
-                src={item.imageSource}
-                alt={item.name}
-                fill
-                style={{
-                  objectFit: "cover",
-                  objectPosition: "center",
-                  borderRadius: "10px",
-                }}
-              />
-            </Link>
-            <GalleryCard>
-              <GalleryCardTitle> {`"${item.name}"`}</GalleryCardTitle>
-              <GalleryCardArtist>
-                {item.artist}, {item.year}
-              </GalleryCardArtist>
-            </GalleryCard>
-          </ImageBox>
-        ))}
-      </ImageStyled>
-      <NavigationBar />
-    </Wrapper>
-  );
-}
-const testArray = [true, false, false, true];

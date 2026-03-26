@@ -17,10 +17,14 @@ const StyledButton = styled.button`
   cursor: pointer;
 `;
 
-export default function LikeButton({ item, toggleFavourite, isFavourite }) {
+export default function LikeButton({ artpiece, onToggleFavourite }) {
   return (
-    <StyledButton onClick={() => toggleFavourite(item)}>
-      {isFavourite ? <HeartMinus color="black" /> : <HeartPlus color="red" />}
+    <StyledButton onClick={() => onToggleFavourite()}>
+      {artpiece.isFavourite ? (
+        <HeartMinus color="red" />
+      ) : (
+        <HeartPlus color="black" />
+      )}
     </StyledButton>
   );
 }
