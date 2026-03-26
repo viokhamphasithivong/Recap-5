@@ -21,6 +21,7 @@ import {
   Styled_Layout,
 } from "@/styles/ArtPieceDetails.styles";
 import { useEffect } from "react";
+import { useArtStore } from "@/stores/artpieceStore";
 
 export default function ArtPieceDetails({}) {
   const router = useRouter();
@@ -35,6 +36,8 @@ export default function ArtPieceDetails({}) {
   });
 
   const [selectedArtpiece, setSelectedArtpiece] = useState(null);
+
+  const { artpiecesData, setArtpiecesData, toggleFavourite } = useArtStore();
 
   function handleImageEnlargement(event) {
     setImageSize((prev) => {
@@ -74,9 +77,14 @@ export default function ArtPieceDetails({}) {
   );
 
   useEffect(() => {
-    console.log("data ", data);
-    if (!selectedArtpiece && data && slug)
-      setSelectedArtpiece(data.find((dataElement) => dataElement.slug == slug));
+    if (data && artpiecesData.length === 0) setArtpiecesData(data);
+  }, [data, artpiecesData]);
+
+  useEffect(() => {
+    if (!selectedArtpiece && artpiecesData && slug)
+      setSelectedArtpiece(
+        artpiecesData.find((artpiece) => artpiece.slug == slug)
+      );
   }, [selectedArtpiece, data, slug]);
 
   if (error) return <p>artwork could not be retrieved :p</p>;
